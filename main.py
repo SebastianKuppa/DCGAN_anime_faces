@@ -20,4 +20,14 @@ train_transform = transforms.Compose([
     ])
 
 train_dataset = datasets.ImageFolder(root="anime", transform=train_transform,)
-train_loader = DataLoader(train_dataset,batch_size=batch_size, shuffle=True,)
+train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True,)
+
+
+# weight initialization
+def init_weights(m):
+    classname = m.__class__.__name__
+    if classname.find('Conv') != -1:
+        nn.init.normal_(m.weight, 0.0, 0.02)
+    elif classname.find('BatchNorm') != -1:
+        nn.init.normal_(m.weight, 1.0, 0.02)
+        nn.init.zeros_(m.bias)
