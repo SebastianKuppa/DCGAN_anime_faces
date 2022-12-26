@@ -53,3 +53,9 @@ class Generator(nn.Module):
         return self.model(x)
 
 
+class Discriminator(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.model = nn.Sequential(
+
+        )
