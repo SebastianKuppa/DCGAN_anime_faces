@@ -11,6 +11,7 @@ import argparse
 import numpy as np
 
 batch_size = 32
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # data preprocessing
 train_transform = transforms.Compose([
@@ -80,3 +81,12 @@ class Discriminator(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.model(x)
+
+
+# init generator and discriminator instances and their weights
+generator = Generator().to(device=device)
+generator.apply(init_weights)
+discriminator = Discriminator()
+discriminator.apply(init_weights)
+
+
