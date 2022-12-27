@@ -99,3 +99,11 @@ def generator_loss(discriminator_prediction_label, ground_truth_label):
 
 def discriminator_loss(output, label):
     return loss_function(output, label)
+
+
+# optimizer init
+lr = 0.0002
+g_optimizer = optim.Adam(generator.parameters(), lr=lr, betas=(0.5, 0.999))
+d_optimizer = optim.Adam(discriminator.parameters(), lr=lr, betas=(0.5, 0.999))
+
+
