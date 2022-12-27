@@ -89,4 +89,13 @@ generator.apply(init_weights)
 discriminator = Discriminator()
 discriminator.apply(init_weights)
 
+# init BCELoss
+loss_function = nn.BCELoss()
 
+
+def generator_loss(discriminator_prediction_label, ground_truth_label):
+    return loss_function(discriminator_prediction_label, ground_truth_label)
+
+
+def discriminator_loss(output, label):
+    return loss_function(output, label)
