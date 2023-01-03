@@ -107,3 +107,29 @@ g_optimizer = optim.Adam(generator.parameters(), lr=lr, betas=(0.5, 0.999))
 d_optimizer = optim.Adam(discriminator.parameters(), lr=lr, betas=(0.5, 0.999))
 
 
+#train loop
+for epoch in range(1, num_epochs+1):
+    d_loss_list, g_loss_list = [], []
+    for index, (real_images, _) in enumerate(train_loader):
+        # discriminator training
+        d_optimizer.zero_grad()
+        real_images = real_images.to(device)
+        real_target = Variable(torch.ones(real_images.size(0)).to(device))
+        fake_target = Variable(torch.zeros(real_images.size(0)).to(device))
+
+        output = discriminator(real_images)
+        d_real_loss = discriminator_loss(output, real_target)
+        d_real_loss.backward()
+
+        # init noise vector for generator input
+        noise_vector = torch.randn(real_images.size(0), 100, 1, 1, device=device)
+        generated_image = generator(noise_vector)
+        output = discriminator(generated_image.detach())
+        d_fake_loss = loss_function(output, fake_target)
+        d_fake_loss.backward()
+
+        # calc total loss
+        d_total_loss = d_fake_loss + d_real_loss
+        d_loss_list.append(d_total_loss)
+        # update the discriminator parameters using the Adam optimizer
+        d_optimizer.step()
