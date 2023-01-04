@@ -133,3 +133,12 @@ for epoch in range(1, num_epochs+1):
         d_loss_list.append(d_total_loss)
         # update the discriminator parameters using the Adam optimizer
         d_optimizer.step()
+
+        # generator training
+        g_optimizer.zero_grad()
+        generated_output = discriminator(generated_image)
+        g_loss = generator_loss(generated_output, real_target)
+        g_loss_list.append(g_loss)
+
+        g_loss.backward()
+        g_optimizer.step()
